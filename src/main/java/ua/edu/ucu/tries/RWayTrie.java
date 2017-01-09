@@ -1,15 +1,30 @@
 package ua.edu.ucu.tries;
 
+
 public class RWayTrie implements Trie {
+
+    private Node root = new Node();
+    private int size;
 
     @Override
     public void add(Tuple t) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        char[] charsList = t.term.toLowerCase().toCharArray();
+        int index;
+
+        Node thisNode = root;    // beginning
+        for (int i = 0; i < charsList.length; ++i) {
+            index = (int) charsList[i] - 97;                    // array value of current char
+            if (thisNode.nextWords[index] == null)
+                thisNode.nextWords[index] = new Node();
+            thisNode = thisNode.nextWords[index];
+        }
+        thisNode.value = t.weight;
     }
 
     @Override
     public boolean contains(String word) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
+
     }
 
     @Override
@@ -19,7 +34,7 @@ public class RWayTrie implements Trie {
 
     @Override
     public Iterable<String> words() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return wordsWithPrefix("");
     }
 
     @Override
@@ -29,7 +44,15 @@ public class RWayTrie implements Trie {
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return this.size;
+
     }
 
+    private class Node {
+        Node[] nextWords;
+        int value = 0;                 // a word's weight
+        Node() {
+            nextWords = new Node[26];
+        }
+    }
 }
